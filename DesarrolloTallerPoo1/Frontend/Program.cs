@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Backend;
 
 namespace Frontend
@@ -10,37 +11,34 @@ namespace Frontend
         {
             try
             {
-                var times = new List<Time>
-                {
-                    new Time(),
-                    new Time(14),
-                    new Time(9, 34),
-                    new Time(19, 45, 56),
-                    new Time(23, 3, 45, 678)
-                };
+                var t1 = new Time();
+                var t2 = new Time(14, 0, 0, 0);
+                var t3 = new Time(9, 34, 0, 0);
+                var t4 = new Time(19, 45, 56, 0);
+                var t5 = new Time(23, 3, 45, 678);
 
-                Time timeToAdd = new Time(9, 34);
+                var times = new List<Time> { t1, t2, t3, t4, t5 };
 
-                foreach (var t in times)
+                // Usamos Inversión Cultural para que el formato use comas fijas en lugar de puntos locales
+                var culture = CultureInfo.InvariantCulture;
+
+                foreach (var time in times)
                 {
-                    Console.WriteLine($"Time: {t}");
-                    Console.WriteLine($"\tMilliseconds: {t.ToMilliseconds():N0}");
-                    Console.WriteLine($"\tSeconds     : {t.ToSeconds():N0}");
-                    Console.WriteLine($"\tMinutes     : {t.ToMinutes():N0}");
-                    Console.WriteLine($"\tAdd         : {t.Add(timeToAdd)}");
-                    Console.WriteLine($"\tIs Other day: {(t.ToMilliseconds() + timeToAdd.ToMilliseconds() >= 86400000 ? "True" : "False")}");
+                    Console.WriteLine($"Time: {time}");
+                    Console.WriteLine($"\tMilliseconds: {time.ToMilliseconds().ToString("N0", culture).PadLeft(15)}");
+                    Console.WriteLine($"\tSeconds     : {time.ToSeconds().ToString("N0", culture).PadLeft(15)}");
+                    Console.WriteLine($"\tMinutes     : {time.ToMinutes().ToString("N0", culture).PadLeft(15)}");
+                    Console.WriteLine($"\tAdd         : {time.Add(t3)}");
+                    Console.WriteLine($"\tIs Other day: {time.IsOtherDay(t4)}");
                     Console.WriteLine();
                 }
 
-                // Prueba de error forzada (como la hora 45)
-                var errorTime = new Time(45, 0, 0);
+                var t6 = new Time(45, -7, 90, -87);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                Console.WriteLine($"{ex.Message}");
+                Console.WriteLine(exception.Message);
             }
-
-            Console.ReadKey();
         }
     }
 }
