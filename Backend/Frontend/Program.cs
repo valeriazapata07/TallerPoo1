@@ -1,7 +1,6 @@
 ﻿
 using GeometricFigures.Backend;
 
-// Configura la cultura para que los números usen punto en los decimales y coma en los miles
 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
 
 var circle = new Circle(name: nameof(Circle), r: 5);
